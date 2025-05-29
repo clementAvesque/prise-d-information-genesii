@@ -1,28 +1,28 @@
 <template>
     <img src="../img/genesii-name.svg" alt="genesii" id="name" />
 
-    <div id="content" >
+    <div id="content">
         <img src="../img/questionnaire.png" alt="" class="in">
 
-        <form class="in">
+        <form class="in" @submit.prevent="click">
             <h2>Inscription</h2>
             <div>
                 <div id="asking">
                     <div class="info">
                         <label>Prénom:</label>
-                        <input type="text" placeholder="Entrez votre prénom" required />
+                        <input type="text" placeholder="Entrez votre prénom" v-model="firstName" required />
                     </div>
                     <div class="info">
                         <label>nom:</label>
-                        <input type="text" placeholder="Entrez votre nom" required />
+                        <input type="text" placeholder="Entrez votre nom" v-model="name" required />
                     </div>
                     <div class="info">
                         <label>téléphone:</label>
-                        <input type="tel" placeholder="Entrez votre téléphone" required />
+                        <input type="tel" placeholder="Entrez votre téléphone" v-model="phone" required />
                     </div>
                     <div class="info">
                         <label>mail:</label>
-                        <input type="email" placeholder="Entrez votre email" required />
+                        <input type="email" placeholder="Entrez votre email" v-model="mail" required />
                         <button type="submit">bonne chance a vous!</button>
                     </div>
                 </div>
@@ -62,9 +62,9 @@ label {
     margin-right: 5vw;
 }
 
-.info{
+.info {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     width: 20vw;
 }
 
@@ -81,7 +81,7 @@ input {
 #content h2 {
     font-size: 2.5rem;
     font-weight: 600;
-    
+
 }
 
 #content form {
@@ -101,6 +101,7 @@ input {
     align-items: center;
     height: 75vh;
     margin-top: 11.3vh;
+    transition: all 1s ease-in-out;
 }
 
 #content form button {
@@ -123,9 +124,40 @@ input {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
 }
 </style>
-<script></script>
+<script setup>
+import { ref } from 'vue'
+
+const backendUrl = import.meta.env.VITE_BACKEND_KEY
+console.log(backendUrl)
+const firstName = ref('')
+const name = ref('')
+const phone = ref('')
+const mail = ref('')
+
+function click() {
+    fetch(`${backendUrl}/api/createUser`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            firstName: firstName.value,
+            name: name.value,
+            mail: mail.value,
+            phone: phone.value
+            
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data)
+    })
+    .catch(err => {
+        console.error(err)
+    });
+}
+</script>
