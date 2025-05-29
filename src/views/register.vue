@@ -164,10 +164,11 @@ const firstName = ref('')
 const name = ref('')
 const phone = ref('')
 const mail = ref('')
-let annonce = document.getElementById('annonce');
-let content = document.getElementById('content');
+
 
 function click() {
+    let annonce = document.getElementById('annonce');
+    let content = document.getElementById('content');
     fetch(`${backendUrl}/api/createUser`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
