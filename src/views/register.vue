@@ -182,28 +182,25 @@ function click() {
     })
         .then(res => res.json())
         .then(data => {
-            if (data.success) {
-
-                //faire en sorte de montré que la personne s'est incrite
-                content.classList.add('out');
+            if (data.ok) {
+                content.style.backgroundColor = '#f83c4f';
                 setTimeout(() => {
-                    content.remove()
-                    annonce.classList.add('in');
-                    annonce.innerHTML = `<h1>Merci pour votre inscription ${firstName.value} ${name.value} vous recevrez d'ici peu un message pour commencer le jeux!</h1>`;
-                }, 800)
-                setTimeout(() => {
-                    annonce.classList.add('out');
-                }, 4000);
-                setTimeout(() => {
-                    router.push('/')
-                }, 4800);
+                    content.style.backgroundColor = '#13ffdf';
+                }, 1000);
             }
-        })
-        .catch(err => {
-            content.style.backgroundColor = '#f83c4f';
+            //faire en sorte de montré que la personne s'est incrite
+            content.classList.add('out');
             setTimeout(() => {
-                content.style.backgroundColor = '#13ffdf';
-            }, 1000);
-        });
+                content.remove()
+                annonce.classList.add('in');
+                annonce.innerHTML = `<h1>Merci pour votre inscription ${firstName.value} ${name.value} vous recevrez d'ici peu un message pour commencer le jeux!</h1>`;
+            }, 800)
+            setTimeout(() => {
+                annonce.classList.add('out');
+            }, 4000);
+            setTimeout(() => {
+                router.push('/')
+            }, 4800);
+        })
 }
 </script>
