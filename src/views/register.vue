@@ -110,7 +110,7 @@ input {
     align-items: center;
     height: 75vh;
     margin-top: 11.3vh;
-    transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 #content form button {
@@ -177,31 +177,41 @@ function click() {
             name: name.value,
             mail: mail.value,
             phone: phone.value
-
         })
     })
-        .then(res => res.json())
-        .then(data => {
-            if (data.ok) {
-                content.style.backgroundColor = '#f83c4f';
-                setTimeout(() => {
-                    content.style.backgroundColor = '#13ffdf';
-                }, 1000);
-            } else {
-                content.classList.add('out');
-                setTimeout(() => {
-                    content.remove()
-                    annonce.classList.add('in');
-                    annonce.innerHTML = `<h1>Merci pour votre inscription ${firstName.value} ${name.value} vous recevrez d'ici peu un message pour commencer le jeux!</h1>`;
-                }, 800)
-                setTimeout(() => {
-                    annonce.classList.add('out');
-                }, 4000);
-                setTimeout(() => {
-                    router.push('/')
-                }, 4800);
-            }
-
-        })
+    .then(async res => {
+        let data;
+        try {
+            data = await res.json();
+        } catch {
+            data = { success: false };
+        }
+        if (!res.ok) {
+            throw data; // Passe dans le catch avec ton JSON d’erreur
+        }
+        return data;
+    })
+    .then(() => {
+        content.classList.add('out');
+        setTimeout(() => {
+            content.remove();
+            annonce.classList.add('in');
+            annonce.innerHTML = `<h1>Merci pour votre inscription ${firstName.value} ${name.value} vous recevrez d'ici peu un message pour commencer le jeux!</h1>`;
+        }, 800)
+        setTimeout(() => {
+            annonce.classList.add('out');
+        }, 4000);
+        setTimeout(() => {
+            router.push('/')
+        }, 4800);
+    })
+    .catch(err => {
+        // Ici tu reçois bien le JSON d’erreur du back (ou un objet d’erreur générique)
+        console.log(err);
+        content.style.backgroundColor = '#f83c4f';
+        setTimeout(() => {
+            content.style.backgroundColor = '#13ffdf';
+        }, 1000);
+    });
 }
 </script>
