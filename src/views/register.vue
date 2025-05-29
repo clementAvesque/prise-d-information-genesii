@@ -1,6 +1,6 @@
 <template>
     <img src="../img/genesii-name.svg" alt="genesii" id="name" />
-
+    <div id="annonce"></div>
     <div id="content">
         <img src="../img/questionnaire.png" alt="" class="in">
 
@@ -36,6 +36,14 @@
     src: url(../font/bigFont.otf);
 }
 
+#annonce {
+    font-family: "font genesii", sans-serif;
+    font-size: 2rem;
+    color: black;
+    margin: 20vh;
+    font-size: clamp(1rem, 2vw, 2.5rem);
+}
+
 #content form #asking {
     display: flex;
     flex-direction: column;
@@ -67,6 +75,7 @@ label {
     flex-direction: column;
     width: 20vw;
 }
+
 
 input {
     width: 80%;
@@ -129,8 +138,24 @@ input {
         opacity: 1;
     }
 }
+
+.out {
+    animation: out 0.8s ease;
+}
+
+@keyframes out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
 </style>
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
 import { ref } from 'vue'
 
 const backendUrl = import.meta.env.VITE_BACKEND_KEY
@@ -139,6 +164,8 @@ const firstName = ref('')
 const name = ref('')
 const phone = ref('')
 const mail = ref('')
+let annonce = document.getElementById('annonce');
+let content = document.getElementById('content');
 
 function click() {
     fetch(`${backendUrl}/api/createUser`, {
@@ -149,15 +176,33 @@ function click() {
             name: name.value,
             mail: mail.value,
             phone: phone.value
-            
+
         })
     })
-    .then(res => res.json())
-    .then(data => {
-        console.log(data)
-    })
-    .catch(err => {
-        console.error(err)
-    });
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+
+                //faire en sorte de montré que la personne s'est incrite
+                content.classList.add('out');
+                setTimeout(() => {
+                    content.remove()
+                    annonce.classList.add('in');
+                    annonce.innerHTML = `<h1>Merci pour votre inscription ${firstName.value} ${name.value} vous recevrez d'ici peu un message pour commencer le jeux!</h1>`;
+                }, 800)
+                setTimeout(() => {
+                    annonce.classList.add('out');
+                }, 4000);
+                setTimeout(() => {
+                    router.push('/')
+                }, 4800);
+            }
+        })
+        .catch(err => {
+            content.style.backgroundColor = '#f83c4f';
+            setTimeout(() => {
+                content.style.backgroundColor = '#13ffdf';
+            }, 1000);
+        });
 }
 </script>
