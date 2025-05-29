@@ -187,20 +187,21 @@ function click() {
                 setTimeout(() => {
                     content.style.backgroundColor = '#13ffdf';
                 }, 1000);
+            } else {
+                content.classList.add('out');
+                setTimeout(() => {
+                    content.remove()
+                    annonce.classList.add('in');
+                    annonce.innerHTML = `<h1>Merci pour votre inscription ${firstName.value} ${name.value} vous recevrez d'ici peu un message pour commencer le jeux!</h1>`;
+                }, 800)
+                setTimeout(() => {
+                    annonce.classList.add('out');
+                }, 4000);
+                setTimeout(() => {
+                    router.push('/')
+                }, 4800);
             }
-            //faire en sorte de montré que la personne s'est incrite
-            content.classList.add('out');
-            setTimeout(() => {
-                content.remove()
-                annonce.classList.add('in');
-                annonce.innerHTML = `<h1>Merci pour votre inscription ${firstName.value} ${name.value} vous recevrez d'ici peu un message pour commencer le jeux!</h1>`;
-            }, 800)
-            setTimeout(() => {
-                annonce.classList.add('out');
-            }, 4000);
-            setTimeout(() => {
-                router.push('/')
-            }, 4800);
+
         })
 }
 </script>
