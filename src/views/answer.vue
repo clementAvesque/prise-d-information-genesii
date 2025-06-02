@@ -165,6 +165,7 @@ function click() {
             let data;
             data = await res.json();
             goodcode = data.client.code;
+            console.log(goodcode);
             userName.value = data.client.firstName;
             mail.value = data.client.mail;
             document.getElementById('formulaire').classList.add('out');
