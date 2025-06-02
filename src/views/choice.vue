@@ -7,7 +7,7 @@
             <img src="../img/questionnaire.png" alt="">
         </div>
 
-        <div id="response"class="animated-right">
+        <div id="response" class="animated-right" @click="Response">
             <h2>une réponse?</h2>
             <p>vous avez trouvé le mot de passe de l’énigme que vous avez reçu?</p>
             <img src="../img/loupe.png" alt="">
@@ -15,12 +15,12 @@
     </div>
 </template>
 <style scoped>
-
 #name {
     width: 100vw;
     height: 10vh;
     margin-top: 5vh;
 }
+
 .poppins {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
@@ -139,27 +139,50 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 function subscribe() {
-    
-        document.getElementById('response').style.opacity = '0'
-        document.getElementById('response').style.width = '0'
-        setTimeout(() => {
-           document.getElementById('response').style.display = 'none'
-        }, 300)
-        setTimeout(() => {
-            let sub = document.getElementById('sub')
-            sub.style.width = '100vw'
-            sub.style.height = '90vh'
-            sub.style.clipPath = 'none'
-            document.getElementById('name').style.marginBottom = '10px'
-            
-            Array.from(sub.children).forEach(element => {
-                element.style.display = 'none'
-                
-            });
-            
-        }, 900)
-        setTimeout(() => {
-            router.push('/register')
-        }, 1500)
+
+    document.getElementById('response').style.opacity = '0'
+    document.getElementById('response').style.width = '0'
+    setTimeout(() => {
+        document.getElementById('response').style.display = 'none'
+    }, 300)
+    setTimeout(() => {
+        let sub = document.getElementById('sub')
+        sub.style.width = '100vw'
+        sub.style.height = '90vh'
+        sub.style.clipPath = 'none'
+        document.getElementById('name').style.marginBottom = '10px'
+
+        Array.from(sub.children).forEach(element => {
+            element.style.display = 'none'
+
+        });
+
+    }, 900)
+    setTimeout(() => {
+        router.push('/register')
+    }, 1500)
+}
+
+function Response() {
+    document.getElementById('sub').style.opacity = '0'
+    document.getElementById('sub').style.width = '0'
+    response.style.width = '100vw'
+    response.style.clipPath = 'none'
+    setTimeout(() => {
+
+        document.getElementById('sub').style.display = 'none'
+    }, 300)
+    setTimeout(() => {
+        let response = document.getElementById('response')
+        response.style.height = '90vh'
+        document.getElementById('name').style.marginBottom = '10px'
+
+        Array.from(response.children).forEach(element => {
+            element.style.display = 'none'
+        });
+    }, 900)
+    setTimeout(() => {
+        router.push('/answer')
+    }, 1500)
 }
 </script>

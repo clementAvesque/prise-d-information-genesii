@@ -1,34 +1,39 @@
 <template>
-    <img src="../img/genesii-name.svg" alt="genesii" id="name" />
-    <div id="annonce"></div>
-    <div id="content">
-        <img src="../img/questionnaire.png" alt="" class="in">
+    <section id="page">
+        <img src="../img/genesii-name.svg" alt="genesii" id="name" />
+        <div id="content" v-if="showContent">
+            <img src="../img/questionnaire.png" alt="" class="in">
 
-        <form class="in" @submit.prevent="click">
-            <h2>Inscription</h2>
-            <div>
-                <div id="asking">
-                    <div class="info">
-                        <label>Prénom:</label>
-                        <input type="text" placeholder="Entrez votre prénom" v-model="firstName" required />
-                    </div>
-                    <div class="info">
-                        <label>nom:</label>
-                        <input type="text" placeholder="Entrez votre nom" v-model="name" required />
-                    </div>
-                    <div class="info">
-                        <label>téléphone:</label>
-                        <input type="tel" placeholder="Entrez votre téléphone" v-model="phone" required />
-                    </div>
-                    <div class="info">
-                        <label>mail:</label>
-                        <input type="email" placeholder="Entrez votre email" v-model="mail" required />
-                        <button type="submit">bonne chance a vous!</button>
+            <form class="in" @submit.prevent="click">
+                <h2>Inscription</h2>
+                <div>
+                    <div id="asking">
+                        <div class="info">
+                            <label>Prénom:</label>
+                            <input type="text" placeholder="Entrez votre prénom" v-model="firstName" required />
+                        </div>
+                        <div class="info">
+                            <label>nom:</label>
+                            <input type="text" placeholder="Entrez votre nom" v-model="name" required />
+                        </div>
+                        <div class="info">
+                            <label>téléphone:</label>
+                            <input type="tel" placeholder="Entrez votre téléphone" v-model="phone" required />
+                        </div>
+                        <div class="info">
+                            <label>mail:</label>
+                            <input type="email" placeholder="Entrez votre email" v-model="mail" required />
+                            <button type="submit">bonne chance a vous!</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+        <div v-if="showAnnonce" :class="annonceClass" id="annonce">
+            <h1>Merci pour votre inscription {{ firstName }} {{ name }} vous recevrez d'ici peu un message pour
+                commencer le jeux!</h1>
+        </div>
+    </section>
 </template>
 <style scoped>
 @font-face {
@@ -109,7 +114,7 @@ input {
     justify-content: space-around;
     align-items: center;
     height: 75vh;
-    margin-top: 11.3vh;
+    margin-top: 10vh;
     transition: all 1s ease-in-out, background-color 0.3s ease-in-out;
 }
 
@@ -159,15 +164,16 @@ const router = useRouter()
 import { ref } from 'vue'
 
 const backendUrl = import.meta.env.VITE_BACKEND_KEY
-console.log(backendUrl)
 const firstName = ref('')
 const name = ref('')
 const phone = ref('')
 const mail = ref('')
+const showContent = ref(true)
+const showAnnonce = ref(false)
+const annonceClass = ref('')
 
-
+// Fonction d'inscription
 function click() {
-    let annonce = document.getElementById('annonce');
     let content = document.getElementById('content');
     fetch(`${backendUrl}/api/createUser`, {
         method: 'POST',
@@ -179,39 +185,33 @@ function click() {
             phone: phone.value
         })
     })
-    .then(async res => {
-        let data;
-        try {
-            data = await res.json();
-        } catch {
-            data = { success: false };
-        }
-        if (!res.ok) {
-            throw data; // Passe dans le catch avec ton JSON d’erreur
-        }
-        return data;
-    })
-    .then(() => {
-        content.classList.add('out');
-        setTimeout(() => {
-            content.remove();
-            annonce.classList.add('in');
-            annonce.innerHTML = `<h1>Merci pour votre inscription ${firstName.value} ${name.value} vous recevrez d'ici peu un message pour commencer le jeux!</h1>`;
-        }, 800)
-        setTimeout(() => {
-            annonce.classList.add('out');
-        }, 4000);
-        setTimeout(() => {
-            router.push('/')
-        }, 4800);
-    })
-    .catch(err => {
-        // Ici tu reçois bien le JSON d’erreur du back (ou un objet d’erreur générique)
-        console.log(err);
-        content.style.backgroundColor = '#f83c4f';
-        setTimeout(() => {
-            content.style.backgroundColor = '#13ffdf';
-        }, 1000);
-    });
+        .then(async res => {
+            let data = await res.json();
+            if (data.success === false) {
+                if (content) {
+                    content.style.backgroundColor = '#f83c4f';
+                    setTimeout(() => {
+                        content.style.backgroundColor = '#13ffdf';
+                    }, 1000);
+                }
+            }else {
+                if (content) {
+                                content.classList.add('out');
+            setTimeout(() => {
+                showContent.value = false;
+                showAnnonce.value = true;
+                annonceClass.value = 'in';
+            }, 800);
+            setTimeout(() => {
+                annonceClass.value = 'out'
+                document.getElementById('name').classList.add('out');
+            }, 3200);
+            setTimeout(() => {
+                router.push('/');
+            }, 4000);
+                }
+            }
+
+        })
 }
 </script>
