@@ -181,7 +181,7 @@ const annonceClass = ref('')
 function click() {
     let content = document.getElementById('content');
     Loading.value = true;
-    fetch(`http://localhost:3000/api/createUser`, {
+    fetch(`${backendUrl}/api/createUser`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
