@@ -201,7 +201,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_KEY // ou ton URL d'API
 const tel = ref('') // ici code = numéro de téléphone
 let goodcode;
 const user = ref(false);
-const code = ref('').uppercase();
+const code = ref('');
 const userName = ref('')
 const mail = ref('')
 const loading = ref(false);
@@ -242,7 +242,7 @@ function click() {
 }
 
 function verifyCode() {
-    if (code.value === goodcode) {
+    if (code.value.toUpperCase() === goodcode) {
         document.getElementById('content').style.backgroundColor = '#13ffdf';
 
         fetch(`${backendUrl}/api/sendMail`, {
