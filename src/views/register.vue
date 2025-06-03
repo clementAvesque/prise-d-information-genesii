@@ -94,6 +94,9 @@ input {
     border-radius: 5px;
     font-family: "font genesii", sans-serif;
     background-color: transparent;
+    border-radius: 0;
+    border-bottom: solid 2px rgba(0, 0, 0, 0.363);
+    outline: none;
 }
 
 #content h2 {
