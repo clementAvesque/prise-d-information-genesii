@@ -1,31 +1,4 @@
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-let timeoutId
-let animation
-function resetTimer() {
-    clearTimeout(animation)
-    clearTimeout(timeoutId)
-    animation = setTimeout(() => {
-        document.getElementById("contenus").classList.add('out')
-    }, 19500)
-    timeoutId = setTimeout(() => {
-        document.getElementById("contenus").classList.remove('out')
-        router.push('/')
-    }, 20000) 
-}
-
-onMounted(() => {
-    document.getElementById("contenus").addEventListener('click', resetTimer)
-    resetTimer()
-})
-
-onUnmounted(() => {
-    clearTimeout(timeoutId)
-    document.getElementById("contenus").removeEventListener('click', resetTimer)
-})
 </script>
 
 <template>
