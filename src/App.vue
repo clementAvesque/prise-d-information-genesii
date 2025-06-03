@@ -10,11 +10,11 @@ function resetTimer() {
     clearTimeout(timeoutId)
     animation = setTimeout(() => {
         document.getElementById("contenus").classList.add('out')
-    }, 9500)
+    }, 19500)
     timeoutId = setTimeout(() => {
         document.getElementById("contenus").classList.remove('out')
         router.push('/')
-    }, 10000) 
+    }, 20000) 
 }
 
 onMounted(() => {
