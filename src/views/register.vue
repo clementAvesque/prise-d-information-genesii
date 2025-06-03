@@ -213,10 +213,10 @@ function click() {
             setTimeout(() => {
                 annonceClass.value = 'out'
                 document.getElementById('name').classList.add('out');
-            }, 3200);
+            }, 5200);
             setTimeout(() => {
                 router.push('/');
-            }, 4000);
+            }, 6000);
                 }
             }
 

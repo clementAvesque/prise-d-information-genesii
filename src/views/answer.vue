@@ -260,10 +260,10 @@ function verifyCode() {
         setTimeout(() => {
             document.getElementById('name').classList.add('out');
             document.getElementById('text_response').classList.add('out');
-        }, 4000);
+        }, 6000);
         setTimeout(() => {
             router.push('/');
-        }, 4800);
+        }, 6800);
 
     } else {
         document.getElementById('found_code').classList.add('tremblement');
