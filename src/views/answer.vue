@@ -22,7 +22,7 @@
         </section>
         <div v-else class="in" id="text_response">
             <h1>Bravo {{ userName }}!</h1>
-            <p>tu as trouvé le code de l'énigme, tu peux maintenant consulter tes mails pour découvrir la suite de
+            <p>tu as trouvé le code de l'énigme, tu peux maintenant aller vérifier tes mails pour découvrir la suite de
                 l'aventure.</p>
         </div>
     </section>
@@ -201,7 +201,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_KEY // ou ton URL d'API
 const tel = ref('') // ici code = numéro de téléphone
 let goodcode;
 const user = ref(false);
-const code = ref('')
+const code = ref('').uppercase();
 const userName = ref('')
 const mail = ref('')
 const loading = ref(false);
@@ -220,7 +220,7 @@ function click() {
             loading.value = false;
             let data;
             data = await res.json();
-            if (data.success === false) {
+            if (data.success === false || data.client === false) {
                 document.getElementById('formulaire').classList.add('tremblement');
                 setTimeout(() => {
                     document.getElementById('formulaire').classList.remove('tremblement');
@@ -228,7 +228,6 @@ function click() {
                 return;
             } else {
                 goodcode = data.client.code;
-                console.log(goodcode);
                 userName.value = data.client.firstName;
                 mail.value = data.client.mail;
                 document.getElementById('formulaire').classList.add('out');
@@ -245,7 +244,7 @@ function click() {
 function verifyCode() {
     if (code.value === goodcode) {
         document.getElementById('content').style.backgroundColor = '#13ffdf';
-        loading.value = true;
+
         fetch(`${backendUrl}/api/sendMail`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -254,20 +253,17 @@ function verifyCode() {
             })
         })
             .then(res => res.json())
-            .then(() => {
-                loading.value = false;
-                document.getElementById('content').classList.add('out');
-                setTimeout(() => {
-                    response.value = true;
-                }, 800);
-                setTimeout(() => {
-                    document.getElementById('name').classList.add('out');
-                    document.getElementById('text_response').classList.add('out');
-                }, 4000);
-                setTimeout(() => {
-                    router.push('/');
-                }, 4800);
-            })
+        document.getElementById('content').classList.add('out');
+        setTimeout(() => {
+            response.value = true;
+        }, 800);
+        setTimeout(() => {
+            document.getElementById('name').classList.add('out');
+            document.getElementById('text_response').classList.add('out');
+        }, 4000);
+        setTimeout(() => {
+            router.push('/');
+        }, 4800);
 
     } else {
         document.getElementById('found_code').classList.add('tremblement');

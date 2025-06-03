@@ -181,7 +181,7 @@ const annonceClass = ref('')
 function click() {
     let content = document.getElementById('content');
     Loading.value = true;
-    fetch(`${backendUrl}/api/createUser`, {
+    fetch(`http://localhost:3000/api/createUser`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -194,6 +194,7 @@ function click() {
         .then(async res => {
             Loading.value = false;
             let data = await res.json();
+            console.log(data);
             if (data.success === false) {
                 if (content) {
                     content.style.backgroundColor = '#f83c4f';
