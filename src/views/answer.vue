@@ -2,7 +2,7 @@
     <section id="page" :style="{ filter: loading ? 'brightness(0.7)' : '' }">
         <img src="../img/genesii-name.svg" alt="genesii" id="name" />
         <section id="content" v-if="!response">
-            <img src="../img/loupe.png" alt="" id="icon" />
+            <img src="../img/loupe.png" alt="" id="icon" :class="{'rotate' : loading }"/>
             <h1>Une réponse?</h1>
             <p>Vous avez trouvé le mot de passe de l’énigmeque vous avez reçu?</p>
             <div id="formulaire" v-if="!user">
@@ -132,6 +132,22 @@ form {
     position: absolute;
     top: 60vh;
     right: 10vw;
+}
+
+.rotate {
+  animation: rotate 4s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .in {

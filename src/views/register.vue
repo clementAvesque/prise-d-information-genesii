@@ -1,8 +1,8 @@
 <template>
     <section id="page" :style="{ filter: Loading ? 'brightness(0.7)' : '' }">
-        <img src="../img/genesii-name.svg" alt="genesii" id="name" />
+        <img src="../img/genesii-name.svg" alt="genesii" id="name" :class = "{'move' : Loading}"/>
         <div id="content" v-if="showContent">
-            <img src="../img/questionnaire.png" alt="" class="in">
+            <img src="../img/questionnaire.png" alt="" :class = "[{'move' : Loading}, 'in']"/>
 
             <form class="in" @submit.prevent="click">
                 <h2>Inscription</h2>
@@ -153,6 +153,22 @@ input {
 
 .out {
     animation: out 0.8s ease;
+}
+
+.move {
+  animation: move 2s ease-in-out infinite;
+}
+
+@keyframes move {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10%); /* Ajuste la distance selon ton besoin */
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes out {
