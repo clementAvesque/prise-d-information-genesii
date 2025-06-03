@@ -1,5 +1,5 @@
 <template>
-    <section id="page">
+    <section id="page" :style="{ filter: Loading ? 'brightness(0.7)' : '' }">
         <img src="../img/genesii-name.svg" alt="genesii" id="name" />
         <div id="content" v-if="showContent">
             <img src="../img/questionnaire.png" alt="" class="in">
@@ -39,6 +39,10 @@
 @font-face {
     font-family: "font genesii";
     src: url(../font/bigFont.otf);
+}
+
+#page{
+    transition: all 0.3s ease;
 }
 
 #annonce {
@@ -162,6 +166,7 @@ input {
 import { useRouter } from 'vue-router'
 const router = useRouter()
 import { ref } from 'vue'
+const Loading = ref(false)
 
 const backendUrl = import.meta.env.VITE_BACKEND_KEY
 const firstName = ref('')
@@ -175,6 +180,7 @@ const annonceClass = ref('')
 // Fonction d'inscription
 function click() {
     let content = document.getElementById('content');
+    Loading.value = true;
     fetch(`${backendUrl}/api/createUser`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -186,6 +192,7 @@ function click() {
         })
     })
         .then(async res => {
+            Loading.value = false;
             let data = await res.json();
             if (data.success === false) {
                 if (content) {

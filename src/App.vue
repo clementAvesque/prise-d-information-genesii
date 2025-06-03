@@ -1,29 +1,51 @@
 <script setup>
-// document.body.addEventListener('mousemove', (e) => {
+import { onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-//     const x = e.clientX;
-//     const y = e.clientY;
-//     let pointeur = document.getElementById('mouse');
-//     let sizeOfCursor = ; // Size of the cursor
-//     if (!pointeur) {
-//         pointeur = document.createElement('div');
-//         pointeur.id = 'mouse';
-//         document.body.appendChild(pointeur);
-//     }
-// });
+const router = useRouter()
+let timeoutId
+let animation
+function resetTimer() {
+    clearTimeout(animation)
+    clearTimeout(timeoutId)
+    animation = setTimeout(() => {
+        document.getElementById("contenus").classList.add('out')
+    }, 9500)
+    timeoutId = setTimeout(() => {
+        document.getElementById("contenus").classList.remove('out')
+        router.push('/')
+    }, 10000) 
+}
+
+onMounted(() => {
+    document.getElementById("contenus").addEventListener('click', resetTimer)
+    resetTimer()
+})
+
+onUnmounted(() => {
+    clearTimeout(timeoutId)
+    document.getElementById("contenus").removeEventListener('click', resetTimer)
+})
 </script>
 
 <template>
+    <div id="contenus">
     <RouterView />
+    </div>
 </template>
 
 <style scoped>
-#mouse{
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #000;
-    border-radius: 50%;
-    z-index: 1000;
+.out {
+    animation: out 0.5s ease;
 }
+@keyframes out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
 </style>

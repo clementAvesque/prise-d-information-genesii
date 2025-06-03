@@ -1,20 +1,16 @@
 <template>
-    <div id="page">
-        <img src="../img/genesii_starting.svg" alt="bouton de démarrage" id="logo" :class="[{ animation: anim },'start']" @click="clicked" />
-        <img src="../img/genesii-name.svg" alt="" id="name" class="start"/>
+    <div id="page" class="start">
+        <img src="../img/genesii_starting.svg" alt="bouton de démarrage" id="logo" class="mouvement" @click="clicked" />
+        <img src="../img/genesii-name.svg" alt="" id="name"/>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-
-const anim = ref(false)
 const router = useRouter()
 
 function clicked() {
-    document.getElementById('page').style.opacity = '0'
-    anim.value = true
+    document.getElementById('page').classList.add('out')
     setTimeout(() => {
         router.push('/choice')
     }, 300)
@@ -49,8 +45,7 @@ function clicked() {
 }
 
 #logo:hover {
-    transform: scale(1.30);
-    transition: transform 0.3s ease;
+    filter: brightness(1.2);
 }
 
 a {
@@ -59,27 +54,19 @@ a {
     align-items: center;
 }
 
-.animation {
-    animation: clicked 0.3s ease-in-out;
+.mouvement {
+    animation: infiniteScale 3s ease-in-out infinite;
 }
 
-@keyframes clicked {
-    0% {
-        transform: scale(1.30);
-    }
-
-    50% {
-        transform: scale(1.40);
-    }
-
-    100% {
-        transform: scale(1.30);
-    }
-
+@keyframes infiniteScale {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
+
 
 .start {
-    animation: start 0.8s ease;
+    animation: start 0.3s ease;
 }
 
 @keyframes start {
@@ -90,4 +77,20 @@ a {
         opacity: 1;
     }
 }
+
+.out {
+    animation: out 0.8s ease;
+}
+
+@keyframes out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+
 </style>

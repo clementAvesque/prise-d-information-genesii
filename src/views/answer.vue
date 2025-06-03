@@ -1,29 +1,50 @@
 <template>
-    <img src="../img/genesii-name.svg" alt="genesii" id="name" />
-    <section id="content">
-        <img src="../img/loupe.png" alt="" id="icon" />
-        <h1>Une réponse?</h1>
-        <p>Vous avez trouvé le mot de passe de l’énigmeque vous avez reçu?</p>
-        <div id="formulaire" v-if="!user">
-            <h2>entrez votre téléphone</h2>
-            <form @submit.prevent="click">
-                <input type="tel" v-model="tel" required />
-                <button type="submit">je m'identifie</button>
-            </form>
-        </div>
-        <div v-else class="in">
-            <h2>Avez-vous trouvé votre code {{ userName}}?</h2>
-            <form @submit.prevent="verifyCode">
-                <input type="text" v-model="code" required />
-                <button type="submit">je m'identifie</button>
-            </form>
+    <section id="page" :style="{ filter: loading ? 'brightness(0.7)' : '' }">
+        <img src="../img/genesii-name.svg" alt="genesii" id="name" />
+        <section id="content" v-if="!response">
+            <img src="../img/loupe.png" alt="" id="icon" />
+            <h1>Une réponse?</h1>
+            <p>Vous avez trouvé le mot de passe de l’énigmeque vous avez reçu?</p>
+            <div id="formulaire" v-if="!user">
+                <h2>entrez votre téléphone</h2>
+                <form @submit.prevent="click">
+                    <input type="tel" v-model="tel" required />
+                    <button type="submit">je m'identifie</button>
+                </form>
+            </div>
+            <div v-else class="in" id="found_code">
+                <h2>Avez-vous trouvé votre code {{ userName }}?</h2>
+                <form @submit.prevent="verifyCode">
+                    <input type="text" v-model="code" required />
+                    <button type="submit">je m'identifie</button>
+                </form>
+            </div>
+        </section>
+        <div v-else class="in" id="text_response">
+            <h1>Bravo {{ userName }}!</h1>
+            <p>tu as trouvé le code de l'énigme, tu peux maintenant consulter tes mails pour découvrir la suite de
+                l'aventure.</p>
         </div>
     </section>
 </template>
+
+
 <style scoped>
 @font-face {
     font-family: "font genesii";
     src: url(../font/bigFont.otf);
+}
+
+#page {
+    transition: all 0.3s ease;
+}
+
+#text_response {
+    font-family: "font genesii", sans-serif;
+    font-size: 2rem;
+    color: black;
+    margin: 20vh;
+    font-size: clamp(1rem, 2vw, 2.5rem);
 }
 
 #content p {
@@ -140,10 +161,42 @@ form {
         opacity: 0;
     }
 }
-</style>
-<script setup>
-import { ref } from 'vue'
 
+.tremblement {
+    animation: tremblement 0.5s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes tremblement {
+
+    10%,
+    90% {
+        transform: translateX(-20px);
+    }
+
+    20%,
+    80% {
+        transform: translateX(20px);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translateX(-20px);
+    }
+
+    40%,
+    60% {
+        transform: translateX(20px);
+    }
+}
+</style>
+
+
+<script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+import { ref } from 'vue'
+const response = ref(false)
 const backendUrl = import.meta.env.VITE_BACKEND_KEY // ou ton URL d'API
 const tel = ref('') // ici code = numéro de téléphone
 let goodcode;
@@ -151,27 +204,39 @@ const user = ref(false);
 const code = ref('')
 const userName = ref('')
 const mail = ref('')
+const loading = ref(false);
 
 
 
 
 function click() {
+    loading.value = true;
     fetch(`${backendUrl}/api/getClient`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: tel.value })
     })
         .then(async res => {
+            loading.value = false;
             let data;
             data = await res.json();
-            goodcode = data.client.code;
-            console.log(goodcode);
-            userName.value = data.client.firstName;
-            mail.value = data.client.mail;
-            document.getElementById('formulaire').classList.add('out');
-            setTimeout(() => {
-                user.value = true;
-            }, 800);
+            if (data.success === false) {
+                document.getElementById('formulaire').classList.add('tremblement');
+                setTimeout(() => {
+                    document.getElementById('formulaire').classList.remove('tremblement');
+                }, 500);
+                return;
+            } else {
+                goodcode = data.client.code;
+                console.log(goodcode);
+                userName.value = data.client.firstName;
+                mail.value = data.client.mail;
+                document.getElementById('formulaire').classList.add('out');
+                setTimeout(() => {
+                    user.value = true;
+                }, 800);
+            }
+
 
         })
 
@@ -180,6 +245,7 @@ function click() {
 function verifyCode() {
     if (code.value === goodcode) {
         document.getElementById('content').style.backgroundColor = '#13ffdf';
+        loading.value = true;
         fetch(`${backendUrl}/api/sendMail`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -187,16 +253,27 @@ function verifyCode() {
                 phone: tel.value,
             })
         })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-        setTimeout(() => {
-             // Redirige vers la page de succès
-        }, 1000);
-        })
+            .then(res => res.json())
+            .then(() => {
+                loading.value = false;
+                document.getElementById('content').classList.add('out');
+                setTimeout(() => {
+                    response.value = true;
+                }, 800);
+                setTimeout(() => {
+                    document.getElementById('name').classList.add('out');
+                    document.getElementById('text_response').classList.add('out');
+                }, 4000);
+                setTimeout(() => {
+                    router.push('/');
+                }, 4800);
+            })
 
     } else {
-        alert('Code incorrect, veuillez réessayer.');
+        document.getElementById('found_code').classList.add('tremblement');
+        setTimeout(() => {
+            document.getElementById('found_code').classList.remove('tremblement');
+        }, 500);
     }
 }
 </script>

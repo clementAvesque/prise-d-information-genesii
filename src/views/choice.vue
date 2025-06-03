@@ -132,6 +132,20 @@
         opacity: 1;
     }
 }
+
+.out {
+    animation: out 0.8s ease;
+}
+
+@keyframes out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
 </style>
 <script setup>
 import { useRouter } from 'vue-router'
@@ -142,47 +156,47 @@ function subscribe() {
 
     document.getElementById('response').style.opacity = '0'
     document.getElementById('response').style.width = '0'
+    let sub = document.getElementById('sub')
+    sub.style.width = '100vw'
+    sub.style.height = '90vh'
+    sub.style.clipPath = 'none'
+            Array.from(sub.children).forEach(element => {
+            element.classList.add('out')
+
+        });
+    
     setTimeout(() => {
         document.getElementById('response').style.display = 'none'
     }, 300)
     setTimeout(() => {
-        let sub = document.getElementById('sub')
-        sub.style.width = '100vw'
-        sub.style.height = '90vh'
-        sub.style.clipPath = 'none'
-        document.getElementById('name').style.marginBottom = '10px'
+
 
         Array.from(sub.children).forEach(element => {
             element.style.display = 'none'
 
         });
 
-    }, 900)
+    }, 800)
     setTimeout(() => {
         router.push('/register')
     }, 1500)
 }
 
 function Response() {
+    let response = document.getElementById('response')
     document.getElementById('sub').style.opacity = '0'
     document.getElementById('sub').style.width = '0'
     response.style.width = '100vw'
+    response.style.height = '90vh'
     response.style.clipPath = 'none'
+    Array.from(response.children).forEach(element => {
+        element.classList.add('out')
+    });
     setTimeout(() => {
-
         document.getElementById('sub').style.display = 'none'
     }, 300)
     setTimeout(() => {
-        let response = document.getElementById('response')
-        response.style.height = '90vh'
-        document.getElementById('name').style.marginBottom = '10px'
-
-        Array.from(response.children).forEach(element => {
-            element.style.display = 'none'
-        });
-    }, 900)
-    setTimeout(() => {
         router.push('/answer')
-    }, 1500)
+    }, 800)
 }
 </script>
