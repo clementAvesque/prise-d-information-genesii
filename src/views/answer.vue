@@ -1,10 +1,11 @@
 <template>
+<img src="../img/back.svg" alt="" id="back" @click="back()" class="in"/>
     <section id="page" :style="{ filter: loading ? 'brightness(0.7)' : '' }">
         <img src="../img/genesii-name.svg" alt="genesii" id="name" />
         <section id="content" v-if="!response">
             <img src="../img/loupe.png" alt="" id="icon" :class="{'rotate' : loading }"/>
             <h1>Une réponse?</h1>
-            <p>Vous avez trouvé le mot de passe de l’énigmeque vous avez reçu?</p>
+            <p>Vous avez trouvé le mot de passe de l’énigme que vous avez reçu?</p>
             <div id="formulaire" v-if="!user">
                 <h2>entrez votre téléphone</h2>
                 <form @submit.prevent="click">
@@ -22,7 +23,7 @@
         </section>
         <div v-else class="in" id="text_response">
             <h1>Bravo {{ userName }}!</h1>
-            <p>tu as trouvé le code de l'énigme, tu peux maintenant aller vérifier tes mails pour découvrir la suite de
+            <p>Tu as trouvé le code de l'énigme, tu peux maintenant aller vérifié tes mails pour découvrir la suite de
                 l'aventure.</p>
         </div>
     </section>
@@ -33,6 +34,15 @@
 @font-face {
     font-family: "font genesii";
     src: url(../font/bigFont.otf);
+}
+
+#back {
+    position: absolute;
+    top: 5vh;
+    left: 5vw;
+    width: 5vw;
+    height: 5vh;
+    cursor: pointer;
 }
 
 #page {
@@ -92,7 +102,7 @@ button {
     height: 50px;
     border-radius: 10px;
     border: black 2px solid;
-    font-size: 24pt;
+    font-size: clamp(1rem, 2vw, 2.5rem);
     background-color: transparent;
     font-family: "font genesii", sans-serif;
 }
@@ -223,7 +233,9 @@ const mail = ref('')
 const loading = ref(false);
 
 
-
+function back() {
+    router.push('/choice')
+}
 
 function click() {
     loading.value = true;

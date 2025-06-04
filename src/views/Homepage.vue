@@ -1,7 +1,8 @@
 <template>
     <div id="page" class="start">
         <img src="../img/genesii_starting.svg" alt="bouton de démarrage" id="logo" class="mouvement" @click="clicked" />
-        <img src="../img/genesii-name.svg" alt="" id="name"/>
+        <img src="../img/genesii-name.svg" alt="" id="name" />
+        <h2 class="opacity">Cliquer pour commencer</h2>
     </div>
 </template>
 
@@ -18,6 +19,16 @@ function clicked() {
 </script>
 
 <style scoped>
+@font-face {
+    font-family: "font genesii";
+    src: url(../font/bigFont.otf);
+}
+
+h2 {
+    font-family: "font genesii", sans-serif;
+    text-align: center;
+}
+
 #page {
     padding: 0;
     margin: 0;
@@ -59,9 +70,35 @@ a {
 }
 
 @keyframes infiniteScale {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.opacity {
+    animation: infiniteopacity 3s ease-in-out infinite;
+}
+
+@keyframes infiniteopacity {
+    0% {
+        opacity:0.3;
+    }
+
+    50% {
+        opacity:1;
+    }
+
+    100% {
+        opacity:0.3;
+    }
 }
 
 
@@ -73,6 +110,7 @@ a {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -91,6 +129,4 @@ a {
         opacity: 0;
     }
 }
-
-
 </style>

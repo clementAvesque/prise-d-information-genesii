@@ -1,4 +1,5 @@
 <template>
+    <img src="../img/back.svg" alt="" id="back" @click="back"/>
     <section id="page" :style="{ filter: Loading ? 'brightness(0.7)' : '' }">
         <img src="../img/genesii-name.svg" alt="genesii" id="name" :class = "{'move' : Loading}"/>
         <div id="content" v-if="showContent">
@@ -9,7 +10,7 @@
                 <div>
                     <div id="asking">
                         <div class="info">
-                            <label>Prénom:</label>
+                            <label>prénom:</label>
                             <input type="text" placeholder="Entrez votre prénom" v-model="firstName" required />
                         </div>
                         <div class="info">
@@ -39,6 +40,15 @@
 @font-face {
     font-family: "font genesii";
     src: url(../font/bigFont.otf);
+}
+
+#back {
+    position: absolute;
+    top: 5vh;
+    left: 5vw;
+    width: 5vw;
+    height: 5vh;
+    cursor: pointer;
 }
 
 #page{
@@ -134,7 +144,7 @@ input {
     font-family: "font genesii", sans-serif;
     background-color: #f83c4f;
     color: black;
-    cursor: pointer;
+    font-size: 16pt;
 }
 
 .in {
@@ -196,7 +206,9 @@ const showContent = ref(true)
 const showAnnonce = ref(false)
 const annonceClass = ref('')
 
-// Fonction d'inscription
+function back() {
+    router.push('/choice')
+}
 function click() {
     let content = document.getElementById('content');
     Loading.value = true;

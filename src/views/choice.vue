@@ -2,14 +2,14 @@
     <img src="../img/genesii-name.svg" alt="genesii" id="name" />
     <div id="container">
         <div class="animated-left" id="sub" @click="subscribe">
-            <h2>inscription</h2>
-            <p>Participez à notre événement pour obtenir le plan de la soirée grâce à notre assistant selmoh.</p>
+            <h2>Inscription</h2>
+            <p>Participez à notre événement pour obtenir la position de la perle du Net dans notre événement avec semloh.</p>
             <img src="../img/questionnaire.png" alt="">
         </div>
 
         <div id="response" class="animated-right" @click="Response">
-            <h2>une réponse?</h2>
-            <p>vous avez trouvé le mot de passe de l’énigme que vous avez reçu?</p>
+            <h2>Une réponse?</h2>
+            <p>Vous avez trouvé le mot de passe de l’énigme que vous avez reçu?</p>
             <img src="../img/loupe.png" alt="">
         </div>
     </div>
@@ -62,6 +62,7 @@
     flex-direction: column;
     align-items: center;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 #sub:hover {
@@ -87,6 +88,7 @@
     flex-direction: column;
     align-items: center;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 #response:hover {

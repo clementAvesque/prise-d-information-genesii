@@ -1,7 +1,9 @@
 <script setup>
+import  blob  from './components/blob.vue';
 </script>
 
 <template>
+    <blob/>
     <div id="contenus">
     <RouterView />
     </div>
