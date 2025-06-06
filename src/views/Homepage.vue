@@ -1,6 +1,6 @@
-<template>
+<template @click="clicked">
     <div id="page" class="start">
-        <img src="../img/genesii_starting.svg" alt="bouton de démarrage" id="logo" class="mouvement" @click="clicked" />
+        <img src="../img/genesii_starting.svg" alt="bouton de démarrage" id="logo" class="mouvement"  />
         <img src="../img/genesii-name.svg" alt="" id="name" />
         <h2 class="opacity">Cliquer pour commencer</h2>
     </div>
@@ -89,7 +89,7 @@ a {
 
 @keyframes infiniteopacity {
     0% {
-        opacity:0.3;
+        opacity:0;
     }
 
     50% {
