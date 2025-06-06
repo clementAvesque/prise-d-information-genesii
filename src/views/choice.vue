@@ -77,18 +77,19 @@
 
 
 #response {
-    width: 40vw;
+    width: 50vw;
     padding-left: 10%;
     height: 60vh;
     background-color: #f48591;
     color: black;
-    width: 45%;
     clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
+    margin-left: -15vw;
+
 }
 
 #response:hover {
