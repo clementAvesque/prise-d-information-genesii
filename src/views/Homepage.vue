@@ -1,5 +1,5 @@
-<template @click="clicked">
-    <div id="page" class="start">
+<template >
+    <div id="page" class="start" @click="clicked">
         <img src="../img/genesii_starting.svg" alt="bouton de démarrage" id="logo" class="mouvement"  />
         <img src="../img/genesii-name.svg" alt="" id="name" />
         <h2 class="opacity">Cliquer pour commencer</h2>
