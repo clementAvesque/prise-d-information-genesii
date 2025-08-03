@@ -98,7 +98,7 @@
 
 
 button {
-    width: 200px;
+    width: 300px;
     height: 50px;
     border-radius: 10px;
     border: black 2px solid;
