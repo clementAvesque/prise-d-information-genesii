@@ -255,6 +255,7 @@ function click() {
                 }, 500);
                 return;
             } else {
+            console.log(data.client.message);
                 goodcode = data.client.code;
                 userName.value = data.client.firstName;
                 mail.value = data.client.mail;
